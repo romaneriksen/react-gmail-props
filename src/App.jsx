@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 import initialEmails from './data/emails'
 
+import Emails from './components/Emails'
+
 import './styles/App.css'
 
 const getReadEmails = emails => emails.filter(email => !email.read)
@@ -12,6 +14,12 @@ function App() {
   const [emails, setEmails] = useState(initialEmails)
   const [hideRead, setHideRead] = useState(false)
   const [currentTab, setCurrentTab] = useState('inbox')
+
+  const [selectedEmail, setSelectedEmail] = useState(null);
+
+  const handleItemClick = (item) => [
+    setSelectedEmail(item.title)
+]
 
   const unreadEmails = emails.filter(email => !email.read)
   const starredEmails = emails.filter(email => email.starred)
@@ -40,6 +48,10 @@ function App() {
 
   if (currentTab === 'starred')
     filteredEmails = getStarredEmails(filteredEmails)
+
+
+  // COMPONENTS 
+
 
   return (
     <div className="app">
@@ -88,7 +100,7 @@ function App() {
         </ul>
       </nav>
       <main className="emails">
-        <ul>
+        {/* <ul>
           {filteredEmails.map((email, index) => (
             <li
               key={index}
@@ -114,7 +126,11 @@ function App() {
               <div className="title">{email.title}</div>
             </li>
           ))}
-        </ul>
+        </ul> */}
+        <Emails filteredEmails={filteredEmails} toggleRead={toggleRead} toggleStar={toggleStar} handleItemClick={handleItemClick}/>
+        <div>
+          {selectedEmail}
+        </div>
       </main>
     </div>
   )
